@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  
+  configserver:
+    image: christopherami/configserver:latest
+    mem_limit: 700m
+    ports:
+      - "8071:8071"
+    networks:
+      - chrisbank-network
+  
+  accounts:
+    image: christopherami/accounts:latest
+    mem_limit: 700m
+    ports:
+      - "8082:8082"
+    networks:
+      - chrisbank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+        SPRING_PROFILES_ACTIVE: prod
+        SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      
+      
+    
+  loans:
+    image: christopherami/loans:latest
+    mem_limit: 700m
+    ports:
+      - "8083:8083"
+    networks:
+      - chrisbank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+        SPRING_PROFILES_ACTIVE: prod
+        SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+    
+  cards:
+    image: christopherami/cards:latest
+    mem_limit: 700m
+    ports:
+      - "8084:8084"
+    networks:
+      - chrisbank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+        SPRING_PROFILES_ACTIVE: prod
+        SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+    
+networks:
+  chrisbank-network:

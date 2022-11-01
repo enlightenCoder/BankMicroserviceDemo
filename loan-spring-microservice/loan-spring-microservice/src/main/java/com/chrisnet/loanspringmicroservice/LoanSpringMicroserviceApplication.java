@@ -1,0 +1,15 @@
+package com.chrisnet.loanspringmicroservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+
+@RefreshScope
+@SpringBootApplication
+public class LoanSpringMicroserviceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(LoanSpringMicroserviceApplication.class, args);
+	}
+
+}
